@@ -4,20 +4,27 @@ module Core =
     type 'a TestType = 
         | TestString of string
         | TestList of 'a list
+        | TestListItem of 'a
 
     let private xor a b = if a then not b else b
     let private isOrNot is = if is then "is" else "is not"
+    let private doesOrNot is = if is then "does" else "does not"
+    let private notSupported actual expected = 
+        sprintf "%A and/or %A are not supported" actual expected
 
-    let _string func y (x: string) = (TestString >> func) y (TestString x)
-    let _list func y (x: 'z list) = (TestList >> func) y (TestList x)
+    let _string (input: string) = TestString input
+    let _list (input: 'a list) = TestList input
+    let _listItem (input: 'a) = TestListItem input
 
-    let is func x = func false x
-    let isNot func x = func true x
-    let has func x = func false x
-    let have func x = func false x
-    let doesNotHave func x = func true x
+    let is func y x = func false y x
+    let isNot func y x = func true y x
+    let has func y x = func false y x
+    let have func y x = func false y x
+    let does func y x = func false y x
+    let doesNot func y x = func true y x
+    let doesNotHave func y x = func true y x
     
-    let greaterThan y (negate: bool) x: Result<bool, string> = 
+    let greaterThan (negate: bool) y x: Result<bool, string> = 
         let resultOk = xor (x > y) negate
         if resultOk then Ok (true)
         else 
@@ -78,74 +85,93 @@ module Core =
                 Error (text)
         | _ -> Error (sprintf "Input %A is not supported" x)
 
-    let containsString (text: string) (x: 'a TestType): Result<bool, string> = 
-        match x with 
-        | TestString str -> 
-            if str.Contains(text) then Ok (true)
+    let contain (negate: bool) (y: 'a TestType) (input: 'a TestType): Result<bool, string> = 
+        match input, y with 
+        | TestString strInput, TestString strY -> 
+            let resultOk = xor (strInput.Contains(strY)) negate
+            if resultOk then Ok (true)
             else 
-                let text = sprintf "\"%s\" does not contain string \"%s\"" str text
+                let does = negate
+                let text = sprintf "\"%s\" %s contain string \"%s\"" 
+                            strInput (doesOrNot does) strY
                 Error (text)
         | _ -> 
-            Error (sprintf "Input %A is not supported." x)
+            Error (sprintf "Input %A is not supported." input)
 
-    let equalToString (y: string) (x: 'a TestType): Result<bool, string> = 
-        match x with 
-        | TestString str -> 
-            if str = y then Ok (true) 
+    let equalTo (negate: bool) (expected: 'a TestType) (actual: 'a TestType): Result<bool, string> = 
+        match actual, expected with 
+        | TestString strActual, TestString strExpected -> 
+            let resultOk = xor (strActual = strExpected) negate
+            if resultOk then Ok (true) 
             else 
+                let is = negate
                 let text = 
-                    sprintf "Expected = %s. Actual = %s" str y
+                    sprintf "Actual string %s %s equal to expected string %s" 
+                        strActual (isOrNot is) strExpected 
                 Error (text)
-        | _ -> Error (sprintf "Input %A is not supported" x)
+        | TestList listActual, TestList listExpected -> 
+            let resultOk = xor (listActual = listExpected) negate
+            if resultOk then Ok (true)
+            else 
+                let is = negate
+                let text = sprintf "List %A %s equal to %A" 
+                            listActual (isOrNot is) listExpected
+                Error (text)
+        | _ -> Error (notSupported actual expected)
 
-    let empty (x: 'a TestType): Result<bool, string> = 
+    let empty (negate: bool) (_: 'a TestType) (x: 'a TestType): Result<bool, string> = 
         match x with 
         | TestString str -> 
-            if str.Length = 0 then Ok (true)
+            let resultOk = xor (str.Length = 0) negate
+            if resultOk then Ok (true)
             else 
-                let text = sprintf "%s is not an empty string" str
+                let is = negate
+                let text = sprintf "%s %s an empty string" 
+                            str (isOrNot is)
                 Error (text)
         | TestList list -> 
             if list.Length = 0 then Ok (true)
             else 
-                let text = sprintf "%A is not an empty list" list
-                Error (text)
-        // | _ -> 
-        //     Error (sprintf "Input %A is not supported" x)
-
-    let length (len: int) (x: 'a TestType): Result<bool, string> = 
-        match x with 
-        | TestString str -> 
-            if str.Length = len then Ok (true)
-            else 
-                let text = sprintf "The length of %A is not %d" x len
-                Error (text)
-        | TestList list -> 
-            if list.Length = len then Ok (true)
-            else 
-                let text = sprintf "The length of %A is not %d" x len
-                Error (text)
-        // | _ -> 
-        //     Error (sprintf "Input %A is not supported" x)
-
-    let equalToList (anotherList: 'a list) (x: 'a TestType): Result<bool, string> =
-        match x with 
-        | TestList list -> 
-            if list = anotherList then Ok (true)
-            else 
-                let text = sprintf "List %A is not equal to %A" list anotherList
-                Error (text)
-        | _ -> Error (sprintf "Input %A is not supported." x)
-
-    let containsElem (elem: 'a) (x: 'a TestType): Result<bool, string> = 
-        match x with 
-        | TestList list -> 
-            if list |> List.contains elem then Ok (true)
-            else 
-                let text = sprintf "List %A does not contain not element %A" list elem
+                let is = negate
+                let text = sprintf "%A %s an empty list" 
+                            list (isOrNot is)
                 Error (text)
         | _ -> 
-            Error (sprintf "This function does not support input %A" x)
+            Error (sprintf "Input %A is not supported" x)
+
+    let length (negate: bool) (len: int) (x: 'a TestType): Result<bool, string> = 
+        match x with 
+        | TestString str -> 
+            let resultOk = xor (str.Length = len) negate
+            if resultOk then Ok (true)
+            else 
+                let is = negate
+                let text = sprintf "The length of %A %s %d" 
+                            x (isOrNot is) len
+                Error (text)
+        | TestList list -> 
+            let resultOk = xor (list.Length = len) negate
+            if resultOk then Ok (true)
+            else 
+                let is = negate
+                let text = sprintf "The length of %A %s %d" 
+                            x (isOrNot is) len
+                Error (text)
+        | _ -> 
+            Error (sprintf "Input %A is not supported" x)
+
+    let containsElem (negate: bool) (elem: 'a TestType) (list: 'a TestType): Result<bool, string> = 
+        match list, elem with 
+        | TestList list, TestListItem item -> 
+            let resultOk = xor (list |> List.contains item) negate
+            if resultOk then Ok (true)
+            else 
+                let does = negate
+                let text = sprintf "List %A %s contain not element %A" 
+                            list (doesOrNot does) elem
+                Error (text)
+        | _ -> 
+            Error (notSupported list elem)
         
     let verify 
         (testName: string) 
@@ -214,3 +240,14 @@ module Core =
         
         header + "\n" + failedTestResultMessages
 
+    let p = 
+        (_string "sdsd") |> does contain (_string "sd")
+    
+    let q = 
+        (_string "sdsd") |> doesNot contain (_string "sd")
+
+    let r = 
+        (_list [1, 2, 3, 5]) |> is empty
+    
+    let r1 = 
+        (_string "actualResult") |> is equalTo (_string "expectedResult")

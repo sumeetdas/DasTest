@@ -22,7 +22,7 @@ let run() =
                     [
                         verify
                             "\"banana\" contains \"rna\""
-                            ("banana" |> _string (containsString "rna"))
+                            ((_string "banana") |> does contain (_string "rna"))
                     ]
                 )
         ]

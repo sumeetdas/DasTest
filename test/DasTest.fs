@@ -18,12 +18,13 @@ testSuite
                         NestedSuite.TestSuite2.run()
                         AnotherSuite.run()
                         MainSuite.run()
-                    ]
+                    ] 
+                    |> String.concat "\n"
                 
                 [
                     verify
                         "Test result is same as expected"
-                        (actualResult |> _string is equalTo expectedResult)
+                        ((_string actualResult) |> is equalTo (_string expectedResult))
                 ]
             )
     ]
