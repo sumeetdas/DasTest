@@ -52,34 +52,48 @@ module Core =
     let True x = x = true
     let False x = x = false
 
-    let startsWith (text: string) (x: string): bool = 
-        x.StartsWith(text)
+    let startsWith (text: string) (x: 'a TestType): Result<bool, string> = 
+        match x with
+        | TestString str -> 
+            if str.StartsWith(text) then Ok (true)
+            else 
+                let text = sprintf "\"%s\" does not ends with \"%s\"" str text
+                Error (text)
+        | _ -> Error (sprintf "Input %A is not supported" x)
 
-    let endsWith (text: string) (x: string): Result<bool, string> = 
-        if x.EndsWith(text) then Ok (true)
-        else 
-            let text = sprintf "%s does not ends with %s" x text
-            Error (text)
+    let endsWith (text: string) (x: 'a TestType): Result<bool, string> = 
+        match x with 
+        | TestString str -> 
+            if str.EndsWith(text) then Ok (true)
+            else 
+                let text = sprintf "\"%s\" does not ends with \"%s\"" str text
+                Error (text)
+        | _ -> Error (sprintf "Input %A is not supported" x)
 
     let containsString (text: string) (x: 'a TestType): Result<bool, string> = 
         match x with 
         | TestString str -> 
             if str.Contains(text) then Ok (true)
             else 
-                let text = sprintf "%s does not contain string %s" str text
+                let text = sprintf "\"%s\" does not contain string \"%s\"" str text
                 Error (text)
         | _ -> 
             Error (sprintf "Input %A is not supported." x)
 
-    let emptyString (x: 'a TestType): Result<bool, string> = 
+    let empty (x: 'a TestType): Result<bool, string> = 
         match x with 
         | TestString str -> 
             if str.Length = 0 then Ok (true)
             else 
                 let text = sprintf "%s is not an empty string" str
                 Error (text)
-        | _ -> 
-            Error (sprintf "Input %A is not supported" x)
+        | TestList list -> 
+            if list.Length = 0 then Ok (true)
+            else 
+                let text = sprintf "%A is not an empty list" list
+                Error (text)
+        // | _ -> 
+        //     Error (sprintf "Input %A is not supported" x)
 
     let length (len: int) (x: 'a TestType): Result<bool, string> = 
         match x with 
@@ -115,26 +129,29 @@ module Core =
         | Ok (_) -> Ok (true)
         | Error (message) ->
             let text = 
-                sprintf "Test \"%s\" failed. Reason:\n\t\t\t%s" 
+                sprintf "Test `%s` failed. Reason:\n\t\t\t%s" 
                     testName message
             Error(text)
 
     let unitTest 
         (testName: string) 
-        (testFunc: unit -> Result<bool, string>)
+        (testFunc: unit -> Result<bool, string> list)
         : Result<bool, string> = 
 
-        let testResult = testFunc()
+        let verifyResults = testFunc()
 
-        match testResult with 
-        | Ok (_) -> Ok (true)
-        | Error (message) -> 
-            let text = 
-                sprintf 
-                    "Unit Test %s failed because of the 
-                    following error:\n\t\t%s"
-                    testName message
-            Error (text)
+        verifyResults 
+        |> List.map (fun result -> 
+            match result with 
+            | Ok (_) -> Ok (true)
+            | Error (message) -> 
+                let text = 
+                    sprintf 
+                        "Unit Test `%s` failed because of the following error:\n\t\t%s"
+                        testName message
+                Error (text)
+        )
+        |> List.head
 
     let testSuite 
         (suiteName: string) 
@@ -158,13 +175,15 @@ module Core =
                 (0, "")
         
         let header = 
-            sprintf "%d/%d unit tests passed in test suite \"%s\"."
-                numFailedUnitTests totalUnitTests suiteName
+            sprintf "%d/%d unit tests passed in test suite `%s`."
+                (totalUnitTests - numFailedUnitTests) 
+                totalUnitTests 
+                suiteName
 
         let failedTestResultMessages = 
             if numFailedUnitTests = 0 then ""
             else 
-                sprintf "Failed unit tests: \n\n%s" failedUnitTestResults
+                sprintf "Failed unit tests: %s" failedUnitTestResults
         
         header + "\n" + failedTestResultMessages
 
