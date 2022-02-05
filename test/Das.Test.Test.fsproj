@@ -9,7 +9,8 @@
   <ItemGroup>
     <Compile Include="NestedSuite/*.fs" />
     <Compile Include="AnotherSuite.fs" />
-    <Compile Include="Library.fs" />
+    <Compile Include="MainSuite.fs" />
+    <Compile Include="DasTest.fs" />
   </ItemGroup>
 
   <ItemGroup>

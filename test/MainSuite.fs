@@ -1,8 +1,8 @@
-module Test
+module MainSuite
 
 open Das.Test.Core
 
-let run () =
+let run() =
     testSuite
         "Library.fs"
         [
@@ -26,9 +26,3 @@ let run () =
                     ]
                 )
         ]
-    |> printfn "%s"
-
-NestedSuite.TestSuite1.run()
-NestedSuite.TestSuite2.run()
-AnotherSuite.run()
-run()

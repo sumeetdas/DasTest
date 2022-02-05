@@ -26,4 +26,3 @@ let run () =
                     ]
                 )
         ]
-    |> printfn "%s"

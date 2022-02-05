@@ -5,48 +5,56 @@ module Core =
         | TestString of string
         | TestList of 'a list
 
-    let _string func (x: string) = func (TestString x)
-    let _list func (x: 'z list) = func (TestList x)
+    let private xor a b = if a then not b else b
+    let private isOrNot is = if is then "is" else "is not"
 
-    let is func x = func x
-    let isNot func x = not (func x)
-    let has func x = func x
-    let have func x = func x
-    let doesNotHave func x = not (func x)
+    let _string func y (x: string) = (TestString >> func) y (TestString x)
+    let _list func y (x: 'z list) = (TestList >> func) y (TestList x)
 
-    let equalTo y x: Result<bool, string> = 
-        if x = y then Ok (true) 
+    let is func x = func false x
+    let isNot func x = func true x
+    let has func x = func false x
+    let have func x = func false x
+    let doesNotHave func x = func true x
+    
+    let greaterThan y (negate: bool) x: Result<bool, string> = 
+        let resultOk = xor (x > y) negate
+        if resultOk then Ok (true)
         else 
+            let is = negate
             let text = 
-                sprintf "Expected = %A. Actual = %A" x y
+                sprintf "%A %s greater than %A" 
+                    x (isOrNot is) y
             Error (text)
 
-    let greaterThan y x: Result<bool, string> = 
-        if x > y then Ok (true)
-        else 
-            let text = 
-                sprintf "%A is not greater than %A" x y
-            Error (text)
-
-    let greaterThanOrEqualTo y x = 
-        if x >= y then Ok (true)
+    let greaterThanOrEqualTo y (negate: bool) x = 
+        let resultOk = xor (x >= y) negate
+        if resultOk then Ok (true)
         else
+            let is = negate
             let text = 
-                sprintf "%A is not greater than or equal to %A" x y
+                sprintf "%A %s greater than or equal to %A" 
+                    x (isOrNot is) y
             Error (text)
 
-    let lessThan y x = 
-        if x < y then Ok (true)
+    let lessThan y (negate: bool) x = 
+        let resultOk = xor (x < y) negate
+        if resultOk then Ok (true)
         else 
+            let is = negate
             let text = 
-                sprintf "%A is not less than %A" x y
+                sprintf "%A %s less than %A" 
+                    x (isOrNot is) y
             Error (text)
 
-    let lessThanOrEqualTo y x = 
-        if x <= y then Ok (true)
+    let lessThanOrEqualTo y (negate: bool) x = 
+        let resultOk = xor (x <= y) negate
+        if resultOk then Ok (true)
         else 
+            let is = negate
             let text = 
-                sprintf "%A is not less than or equal to %A" x y
+                sprintf "%A %s less than or equal to %A" 
+                    x (isOrNot is) y
             Error (text)
 
     let True x = x = true
@@ -80,6 +88,16 @@ module Core =
         | _ -> 
             Error (sprintf "Input %A is not supported." x)
 
+    let equalToString (y: string) (x: 'a TestType): Result<bool, string> = 
+        match x with 
+        | TestString str -> 
+            if str = y then Ok (true) 
+            else 
+                let text = 
+                    sprintf "Expected = %s. Actual = %s" str y
+                Error (text)
+        | _ -> Error (sprintf "Input %A is not supported" x)
+
     let empty (x: 'a TestType): Result<bool, string> = 
         match x with 
         | TestString str -> 
@@ -109,6 +127,15 @@ module Core =
                 Error (text)
         // | _ -> 
         //     Error (sprintf "Input %A is not supported" x)
+
+    let equalToList (anotherList: 'a list) (x: 'a TestType): Result<bool, string> =
+        match x with 
+        | TestList list -> 
+            if list = anotherList then Ok (true)
+            else 
+                let text = sprintf "List %A is not equal to %A" list anotherList
+                Error (text)
+        | _ -> Error (sprintf "Input %A is not supported." x)
 
     let containsElem (elem: 'a) (x: 'a TestType): Result<bool, string> = 
         match x with 
