@@ -1,3 +1,5 @@
 .ionide
 src/bin
 src/obj
+
+.fake
