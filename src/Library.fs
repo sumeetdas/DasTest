@@ -11,6 +11,10 @@ module Core =
     let private doesOrNot is = if is then "does" else "does not"
     let private notSupported actual expected = 
         sprintf "%A and/or %A are not supported" actual expected
+    let formatString (str:string): string = 
+        if str.Contains "\n" && (str.Trim().Length <> 0)
+        then sprintf "\"\"\"\n%s\n\"\"\"\n" str
+        else sprintf "\"%s\"" str 
 
     let _string (input: string) = TestString input
     let _list (input: 'a list) = TestList input
@@ -107,7 +111,9 @@ module Core =
                 let is = negate
                 let text = 
                     sprintf "Actual string %s %s equal to expected string %s" 
-                        strActual (isOrNot is) strExpected 
+                        (formatString strActual) 
+                        (isOrNot is) 
+                        (formatString strExpected) 
                 Error (text)
         | TestList listActual, TestList listExpected -> 
             let resultOk = xor (listActual = listExpected) negate
@@ -182,7 +188,7 @@ module Core =
         | Ok (_) -> Ok (true)
         | Error (message) ->
             let text = 
-                sprintf "Test `%s` failed. Reason:\n\t\t\t%s" 
+                sprintf "\n>> Verify `%s` failed. Reason:\n%s" 
                     testName message
             Error(text)
 
@@ -200,7 +206,7 @@ module Core =
             | Error (message) -> 
                 let text = 
                     sprintf 
-                        "Unit Test `%s` failed because of the following error:\n\t\t%s"
+                        "\n> Unit Test `%s` failed because of the following error:\n%s"
                         testName message
                 Error (text)
         )
@@ -222,7 +228,7 @@ module Core =
                     | Error (message) -> 
                         let accCount, accMessage = state
                         let updatedAccMessage = 
-                            accMessage + "\n\n\t" + message
+                            accMessage + "\n" + message
                         (accCount + 1, updatedAccMessage)
                 )
                 (0, "")

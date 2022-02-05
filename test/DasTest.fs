@@ -8,9 +8,7 @@ testSuite
         unitTest
             "Test that the test results are as expected"
             (fun () ->
-                let expectedResult = 
-                    """
-                    """
+                let expectedResult = ""
 
                 let actualResult = 
                     [
