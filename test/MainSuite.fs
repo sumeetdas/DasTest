@@ -12,7 +12,7 @@ let run() =
                     [
                         verify
                             "1 is greater than 2"
-                            (1 |> is greaterThan 2)
+                            ((_int 1) |> is greaterThan (_int 2))
                     ]
                 )
 
