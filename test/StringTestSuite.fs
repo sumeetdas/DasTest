@@ -61,4 +61,18 @@ let run () =
                             ((_string "banana") |> does endWith (_string "ana"))
                     ]
                 )
+
+            unitTest 
+                "Test string is empty"
+                (fun () -> 
+                    [
+                        verify
+                            "\"\" is empty"
+                            ((_string "") |> is empty __)
+                        
+                        verify
+                            "\"banana\" is not empty"
+                            ((_string "banana") |> isNot empty __)
+                    ]
+                )
         ]

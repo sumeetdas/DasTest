@@ -4,25 +4,33 @@ open Das.Test.Core
 
 let run () =
     testSuite
-        "NestedSuite.FloatTestSuite.fs"
+        "NumberTests.FloatTestSuite.fs"
         [
             unitTest 
-                "Test number unit test functions"
+                "Test float number is greater than another float number"
                 (fun () -> 
                     [
                         verify
-                            "3 is greater than 2"
-                            ((_int 3) |> is greaterThan (_int 2))
+                            "3.2 is greater than 3.12"
+                            ((_float 3.2) |> is greaterThan (_float 3.12))
+                        
+                        verify
+                            "3.2 is not greater than 3.21"
+                            ((_float 3.2) |> isNot greaterThan (_float 3.21))
                     ]
                 )
 
             unitTest 
-                "Test string unit test functions"
+                "Test float number is less than another float number"
                 (fun () -> 
                     [
                         verify
-                            "\"banana\" contains \"ana\""
-                            ((_string "banana") |> does contain (_string "ana"))
+                            "3.2 is less than than 3.21"
+                            ((_float 3.2) |> is lessThan (_float 3.21))
+                        
+                        verify
+                            "3.2 is not less than 3.201"
+                            ((_float 3.2) |> isNot lessThan (_float 3.201))
                     ]
                 )
         ]

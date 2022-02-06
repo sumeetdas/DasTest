@@ -201,27 +201,36 @@ module Core =
         (expected: 'a TestType) 
         (actual: 'a TestType)
         : Result<bool, string> = 
+        
+        let testEqual (message: string) a b = 
+            let resultOk = xor (a = b) negate
+            if resultOk then Ok (true) 
+            else 
+                Error (message)
 
         match actual, expected with 
         | TestString strActual, TestString strExpected -> 
-            let resultOk = xor (strActual = strExpected) negate
-            if resultOk then Ok (true) 
-            else 
-                let is = negate
-                let text = 
-                    sprintf "Actual string %s %s equal to expected string %s" 
+            testEqual 
+                (sprintf "Actual string %s %s equal to expected string %s" 
                         (formatString strActual) 
-                        (isOrNot is) 
-                        (formatString strExpected) 
-                Error (text)
+                        (isOrNot negate) 
+                        (formatString strExpected))
+                strActual strExpected
         | TestList listActual, TestList listExpected -> 
-            let resultOk = xor (listActual = listExpected) negate
-            if resultOk then Ok (true)
-            else 
-                let is = negate
-                let text = sprintf "List %A %s equal to %A" 
-                            listActual (isOrNot is) listExpected
-                Error (text)
+            testEqual
+                (sprintf "List %A %s equal to %A" 
+                    listActual (isOrNot negate) listExpected)
+                listActual listExpected
+        | TestInteger integerActual, TestInteger integerExpected -> 
+            testEqual
+                (sprintf "Integer %A %s equal to Integer %A" 
+                    integerActual (isOrNot negate) integerExpected)
+                integerActual integerExpected
+        | TestFloat floatActual, TestFloat floatExpected -> 
+            testEqual
+                (sprintf "Integer %A %s equal to Integer %A" 
+                    floatActual (isOrNot negate) floatExpected)
+                floatActual floatExpected
         | _ -> Error (notSupported actual expected)
 
     let empty 
@@ -251,12 +260,12 @@ module Core =
 
     let length 
         (negate: bool) 
-        (len: int) 
+        (len: 'a TestType) 
         (x: 'a TestType)
         : Result<bool, string> = 
 
-        match x with 
-        | TestString str -> 
+        match x, len with 
+        | TestString str, TestInteger len -> 
             let resultOk = xor (str.Length = len) negate
             if resultOk then Ok (true)
             else 
@@ -264,16 +273,16 @@ module Core =
                 let text = sprintf "The length of %A %s %d" 
                             x (isOrNot is) len
                 Error (text)
-        | TestList list -> 
+        | TestList list, TestInteger len -> 
             let resultOk = xor (list.Length = len) negate
             if resultOk then Ok (true)
             else 
                 let is = negate
                 let text = sprintf "The length of %A %s %d" 
-                            x (isOrNot is) len
+                            list (isOrNot is) len
                 Error (text)
         | _ -> 
-            Error (sprintf "Input %A is not supported" x)
+            Error (notSupported x len)
 
     let containsElem 
         (negate: bool) 
