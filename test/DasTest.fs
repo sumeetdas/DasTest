@@ -12,9 +12,9 @@ testSuite
 
                 let actualResult = 
                     [
-                        NestedSuite.TestSuite1.run()
-                        NestedSuite.TestSuite2.run()
-                        AnotherSuite.run()
+                        NumberTests.IntegerTestSuite.run()
+                        NumberTests.FloatTestSuite.run()
+                        StringTestSuite.run()
                         MainSuite.run()
                     ] 
                     |> String.concat "\n"

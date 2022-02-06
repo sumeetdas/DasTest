@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="NestedSuite/*.fs" />
-    <Compile Include="AnotherSuite.fs" />
+    <Compile Include="NumberTests/*.fs" />
+    <Compile Include="StringTestSuite.fs" />
     <Compile Include="MainSuite.fs" />
     <Compile Include="DasTest.fs" />
   </ItemGroup>

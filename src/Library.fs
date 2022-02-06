@@ -5,7 +5,6 @@ module Core =
         | TestString of string
         | TestList of 'a list
         | TestListItem of 'a
-        | TestVariable of 'a
         | TestValue of 'a
         | TestBoolean of bool
         | TestInteger of int
@@ -25,7 +24,6 @@ module Core =
     let _string (input: string) = TestString input
     let _list (input: 'a list) = TestList input
     let _listItem (input: 'a) = TestListItem input
-    let _variable (input: 'a) = TestVariable input
     let _value (input: 'a) = TestValue input
     let _bool (input: bool) = TestBoolean input
     let _int (input: int) = TestInteger input
@@ -146,7 +144,7 @@ module Core =
                 Error (text)
         | _ -> Error (notSupported x x)
         
-    let startsWith 
+    let startWith 
         (negate: bool) 
         (text: 'a TestType) 
         (x: 'a TestType)
@@ -163,7 +161,7 @@ module Core =
                 Error (message)
         | _ -> Error (notSupported x text)
 
-    let endsWith 
+    let endWith 
         (negate: bool) 
         (text: 'a TestType) 
         (x: 'a TestType)

@@ -1,10 +1,10 @@
-module AnotherSuite
+module NumberTests.FloatTestSuite
 
 open Das.Test.Core
 
 let run () =
     testSuite
-        "AnotherSuite.fs"
+        "NestedSuite.FloatTestSuite.fs"
         [
             unitTest 
                 "Test number unit test functions"
