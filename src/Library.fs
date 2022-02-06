@@ -44,14 +44,31 @@ module Core =
         (x: 'a TestType)
         : Result<bool, string> = 
 
-        let resultOk = xor (x > y) negate
-        if resultOk then Ok (true)
-        else 
-            let is = negate
-            let text = 
-                sprintf "%A %s greater than %A" 
-                    x (isOrNot is) y
-            Error (text)
+        let testGreaterThan (message: string) x y = 
+            let resultOk = xor (x > y) negate
+            if resultOk then Ok (true)
+            else 
+                Error (message)
+
+        let is = negate
+
+        match x, y with 
+        | TestInteger intX, TestInteger intY -> 
+            testGreaterThan
+                (sprintf "%d %s greater than %d" 
+                        intX (isOrNot is) intY)
+                intX intY
+        | TestFloat floatX, TestFloat floatY -> 
+            testGreaterThan
+                (sprintf "%f %s greater than %f" 
+                        floatX (isOrNot is) floatY)
+                floatX floatY
+        | TestValue valX, TestValue valY -> 
+            testGreaterThan
+                (sprintf "%A %s greater than %A" 
+                        valX (isOrNot is) valY)
+                valX valY
+        | _ -> Error (notSupported x y)
 
     let greaterThanOrEqualTo 
         (negate: bool) 
@@ -59,14 +76,31 @@ module Core =
         (x: 'a TestType)
         : Result<bool, string> = 
 
-        let resultOk = xor (x >= y) negate
-        if resultOk then Ok (true)
-        else
-            let is = negate
-            let text = 
-                sprintf "%A %s greater than or equal to %A" 
-                    x (isOrNot is) y
-            Error (text)
+        let testGreaterThanOrEqualTo (message: string) x y = 
+            let resultOk = xor (x >= y) negate
+            if resultOk then Ok (true)
+            else 
+                Error (message)
+
+        let is = negate
+
+        match x, y with 
+        | TestInteger intX, TestInteger intY -> 
+            testGreaterThanOrEqualTo
+                (sprintf "%d %s greater than or equal to %d" 
+                        intX (isOrNot is) intY)
+                intX intY
+        | TestFloat floatX, TestFloat floatY -> 
+            testGreaterThanOrEqualTo
+                (sprintf "%f %s greater than or equal to %f" 
+                        floatX (isOrNot is) floatY)
+                floatX floatY
+        | TestValue valX, TestValue valY -> 
+            testGreaterThanOrEqualTo
+                (sprintf "%A %s greater than or equal to %A" 
+                        valX (isOrNot is) valY)
+                valX valY
+        | _ -> Error (notSupported x y)
 
     let lessThan 
         (negate: bool) 
@@ -74,14 +108,31 @@ module Core =
         (x: 'a TestType) 
         : Result<bool, string> = 
 
-        let resultOk = xor (x < y) negate
-        if resultOk then Ok (true)
-        else 
-            let is = negate
-            let text = 
-                sprintf "%A %s less than %A" 
-                    x (isOrNot is) y
-            Error (text)
+        let testLessThan (message: string) x y = 
+            let resultOk = xor (x < y) negate
+            if resultOk then Ok (true)
+            else 
+                Error (message)
+
+        let is = negate
+
+        match x, y with 
+        | TestInteger intX, TestInteger intY -> 
+            testLessThan
+                (sprintf "%d %s less than %d" 
+                        intX (isOrNot is) intY)
+                intX intY
+        | TestFloat floatX, TestFloat floatY -> 
+            testLessThan
+                (sprintf "%f %s less than %f" 
+                        floatX (isOrNot is) floatY)
+                floatX floatY
+        | TestValue valX, TestValue valY -> 
+            testLessThan
+                (sprintf "%A %s less than %A" 
+                        valX (isOrNot is) valY)
+                valX valY
+        | _ -> Error (notSupported x y)
 
     let lessThanOrEqualTo 
         (negate: bool) 
@@ -89,25 +140,30 @@ module Core =
         (x: 'a TestType)
         : Result<bool, string> = 
 
+        let testLessThanOrEqualTo (message: string) x y = 
+            let resultOk = xor (x <= y) negate
+            if resultOk then Ok (true)
+            else 
+                Error (message)
+
+        let is = negate
+
         match x, y with 
-        | TestInteger xInt, TestInteger yInt -> 
-            let resultOk = xor (xInt <= yInt) negate
-            if resultOk then Ok (true)
-            else 
-                let is = negate
-                let text = 
-                    sprintf "%A %s less than or equal to %A" 
-                        xInt (isOrNot is) yInt
-                Error (text)
-        | TestFloat xFloat, TestFloat yFloat -> 
-            let resultOk = xor (xFloat <= yFloat) negate
-            if resultOk then Ok (true)
-            else 
-                let is = negate
-                let text = 
-                    sprintf "%A %s less than or equal to %A" 
-                        xFloat (isOrNot is) yFloat
-                Error (text)
+        | TestInteger intX, TestInteger intY -> 
+            testLessThanOrEqualTo
+                (sprintf "%d %s less than or equal to %d" 
+                        intX (isOrNot is) intY)
+                intX intY
+        | TestFloat floatX, TestFloat floatY -> 
+            testLessThanOrEqualTo
+                (sprintf "%f %s less than or equal to %f" 
+                        floatX (isOrNot is) floatY)
+                floatX floatY
+        | TestValue valX, TestValue valY -> 
+            testLessThanOrEqualTo
+                (sprintf "%A %s less than or equal to %A" 
+                        valX (isOrNot is) valY)
+                valX valY
         | _ -> Error (notSupported x y)
 
     let True 
@@ -203,7 +259,7 @@ module Core =
         : Result<bool, string> = 
         
         let testEqual (message: string) a b = 
-            let resultOk = xor (a = b) negate
+            let resultOk = (xor (a = b) negate)
             if resultOk then Ok (true) 
             else 
                 Error (message)
@@ -223,12 +279,12 @@ module Core =
                 listActual listExpected
         | TestInteger integerActual, TestInteger integerExpected -> 
             testEqual
-                (sprintf "Integer %A %s equal to Integer %A" 
+                (sprintf "Integer %d %s equal to Integer %d" 
                     integerActual (isOrNot negate) integerExpected)
                 integerActual integerExpected
         | TestFloat floatActual, TestFloat floatExpected -> 
             testEqual
-                (sprintf "Integer %A %s equal to Integer %A" 
+                (sprintf "Float %f %s equal to Float %f" 
                     floatActual (isOrNot negate) floatExpected)
                 floatActual floatExpected
         | _ -> Error (notSupported actual expected)
@@ -249,7 +305,8 @@ module Core =
                             str (isOrNot is)
                 Error (text)
         | TestList list -> 
-            if list.Length = 0 then Ok (true)
+            let resultOk = xor (list.Length = 0) negate
+            if resultOk then Ok (true)
             else 
                 let is = negate
                 let text = sprintf "%A %s an empty list" 
@@ -333,6 +390,11 @@ module Core =
                         testName message
                 Error (text)
         )
+        |> List.filter (fun result -> 
+            match result with 
+            | Error (_) -> true
+            | _ -> false)
+        |> (fun list -> if list.Length = 0 then [ Ok (true) ] else list)
         |> List.head
 
     let testSuite 
@@ -362,24 +424,15 @@ module Core =
                 totalUnitTests 
                 suiteName
 
-        let failedTestResultMessages = 
-            if numFailedUnitTests = 0 then ""
-            else 
-                sprintf "Failed unit tests: %s" failedUnitTestResults
+        // let failedTestResultMessages = 
+        //     if numFailedUnitTests = 0 then ""
+        //     else 
+        //         sprintf "Failed unit tests: %s" failedUnitTestResults
         
-        header + "\n" + failedTestResultMessages
+        // header + "\n" + failedTestResultMessages
+        if numFailedUnitTests = 0 then header
+        else 
+            let failedTestDetails =
+                sprintf "Failed unit tests: %s" failedUnitTestResults
+            failwith ("\n" + header + "\n" + failedTestDetails)
 
-    let p = 
-        (_string "sdsd") |> does contain (_string "sd")
-    
-    let q = 
-        (_string "sdsd") |> doesNot contain (_string "sd")
-
-    let r = 
-        ((_list [1, 2, 3, 5]) |> is empty __)
-    
-    let r1 = 
-        (_string "actualResult") |> is equalTo (_string "expectedResult")
-
-    let r2 = 
-        ((_bool true) |> is True __)

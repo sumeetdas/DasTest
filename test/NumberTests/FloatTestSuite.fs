@@ -30,7 +30,7 @@ let run () =
                         
                         verify
                             "3.2 is not less than 3.201"
-                            ((_float 3.2) |> isNot lessThan (_float 3.201))
+                            ((_float 3.2) |> isNot lessThan (_float 3.19))
                     ]
                 )
         ]

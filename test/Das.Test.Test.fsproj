@@ -10,6 +10,7 @@
     <Compile Include="NumberTests/*.fs" />
     <Compile Include="StringTestSuite.fs" />
     <Compile Include="ListTestSuite.fs" />
+    <Compile Include="ValueTestSuite.fs" />
     <Compile Include="DasTest.fs" />
   </ItemGroup>
 
