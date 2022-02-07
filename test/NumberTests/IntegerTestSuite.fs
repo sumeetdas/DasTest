@@ -9,6 +9,8 @@ let run () =
             unitTest 
                 "Test an integer is equal to another integer"
                 (fun () -> 
+                    let num = 4
+
                     [
                         verify
                             "3 is equal to 3"
@@ -17,6 +19,10 @@ let run () =
                         verify
                             "3 is not equal to 4"
                             ((_int 3) |> isNot equalTo (_int 4))
+                        
+                        verify
+                            "num is equal to 4"
+                            ((_int num) |> is equalTo (_int 4))
                     ]
                 )
 
