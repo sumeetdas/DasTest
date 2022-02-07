@@ -1,9 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- General -->
+    <AssemblyName>Das.Test</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
     <name>Das.Test</name>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Copyright>Copyright 2022 Sumeet Das</Copyright>
+    <OutputType>Library</OutputType>
+
+    <!-- NuGet settings -->
+    <PackageId>Das.Test</PackageId>
+    <PackageTags>Das.Test;FSharp;Functional;Unit Testing;Testing;Test</PackageTags>
+    <PackageReleaseNotes>https://raw.githubusercontent.com/sumeetdas/DasTest/master/RELEASE_NOTES.md</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/sumeetdas/DasTest</PackageProjectUrl>
+    <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/sumeetdas/DasTest</RepositoryUrl>
+
+    <!-- SourceLink settings -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <ItemGroup>

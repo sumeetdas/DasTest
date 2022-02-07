@@ -5,4 +5,6 @@ src/obj
 test/bin
 test/obj
 
+src/nupkg
+
 .fake
