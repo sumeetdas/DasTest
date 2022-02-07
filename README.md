@@ -26,7 +26,7 @@ So I said to myself to heck with it, let me create my own unit testing library.
 
 * To use the library, use `open` statement:
     ```fsharp
-    open Das.Test
+    open Das.Test.Core
     ```
 
 * To understand how tests are written, let us look at how to test whether two numbers are equal:
