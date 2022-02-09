@@ -1,11 +1,6 @@
 # Das.Test
+
 An opinionated unit testing library written in F# for F#.
-
-# Motivation
-
-I tried setting up testing project using [official dotnet link](https://github.com/dotnet/samples/blob/main/core/getting-started/unit-testing-with-fsharp/MathService.Tests/MathService.Tests.fsproj) but got some obscure error for which I couldn't find any solution on the internet. Many other sources like [Scott Wlaschin's blog](https://fsharpforfunandprofit.com/posts/low-risk-ways-to-use-fsharp-at-work-3) are too difficult to follow for someone like me who has never worked with C# or dotnet before.
-
-So I said to myself to heck with it, let me create my own unit testing library.
 
 # Goals
 
@@ -13,16 +8,19 @@ So I said to myself to heck with it, let me create my own unit testing library.
 
 * The library should not expect user to know C# and dotnet (except for basic stuff to make your F# project run), and should document everything that's required to use the library in the docs itself.
 
-* The unit tests written should be easy to understand and reason with.
+* The unit tests written should be easy to understand.
 
 * The library should not have any dependency with another dotnet library or framework.
 
-# Docs
+# Install 
 
-* To install the library, execute the following command:
+To install the library, run the following command:
+
     ```bash
     $ dotnet add package Das.Test
     ```
+
+# Docs
 
 * To use the library, use `open` statement:
     ```fsharp
