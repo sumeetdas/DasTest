@@ -12,11 +12,11 @@ let run () =
                     [
                         verify
                             "3.2 is greater than 3.12"
-                            (3.2 |> is greaterThan 3.12)
+                            (val' 3.2 |> is greaterThan (val' 3.12))
                         
                         verify
                             "3.2 is not greater than 3.21"
-                            (3.2 |> isNot greaterThan 3.21)
+                            (val' 3.2 |> isNot greaterThan (val' 3.21))
                     ]
                 )
 
@@ -26,11 +26,11 @@ let run () =
                     [
                         verify
                             "3.2 is less than than 3.21"
-                            (3.2 |> is lessThan 3.21)
+                            (val' 3.2 |> is lessThan (val' 3.21))
                         
                         verify
                             "3.2 is not less than 3.201"
-                            (3.2 |> isNot lessThan 3.19)
+                            (val' 3.2 |> isNot lessThan (val' 3.19))
                     ]
                 )
         ]

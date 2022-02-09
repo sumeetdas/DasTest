@@ -14,15 +14,15 @@ let run () =
                     [
                         verify
                             "3 is equal to 3"
-                            (3 |> is equalTo 3)
+                            (val' 3 |> is equalTo (val' 3))
                         
                         verify
                             "3 is not equal to 4"
-                            (3 |> isNot equalTo 4)
+                            (val' 3 |> isNot equalTo (val' 4))
                         
                         verify
                             "num is equal to 4"
-                            (num |> is equalTo 4)
+                            (val' num |> is equalTo (val' 4))
                     ]
                 )
 
@@ -32,11 +32,11 @@ let run () =
                     [
                         verify
                             "3 is greater than 2"
-                            (3 |> is greaterThan 2)
+                            (val' 3 |> is greaterThan (val' 2))
                         
                         verify
                             "3 is not greater than than 4"
-                            (3 |> isNot greaterThan 4)
+                            (val' 3 |> isNot greaterThan (val' 4))
                     ]
                 )
 
@@ -46,15 +46,15 @@ let run () =
                     [
                         verify
                             "3 is less than or equal to 3"
-                            (3 |> is lessThanOrEqualTo 3)
+                            (val' 3 |> is lessThanOrEqualTo (val' 3))
                         
                         verify
                             "3 is less than or equal to 4"
-                            (3 |> is lessThanOrEqualTo 4)
+                            (val' 3 |> is lessThanOrEqualTo (val' 4))
                         
                         verify
                             "3 is not less than or equal to 2"
-                            (3 |> isNot lessThanOrEqualTo 2)
+                            (val' 3 |> isNot lessThanOrEqualTo (val' 2))
                     ]
                 )
         ]

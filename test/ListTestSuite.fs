@@ -12,11 +12,11 @@ let run() =
                     [
                         verify
                             "List [1; 2; 3] is equal to list [1; 2; 3]"
-                            ([1; 2; 3] |> is equalTo [1; 2; 3])
+                            (list' [1; 2; 3] |> is equalTo (list' [1; 2; 3]))
                         
                         verify
                             "List [1; 2; 3] is not equal to list [2; 3]"
-                            ([1; 2; 3] |> isNot equalTo [2; 3])
+                            (list' [1; 2; 3] |> isNot equalTo (list' [2; 3]))
                     ]
                 )
 
@@ -26,11 +26,11 @@ let run() =
                     [
                         verify
                             "List [] is empty"
-                            ([] |> is empty __)
+                            (list' [] |> is empty __)
                         
                         verify
                             "List [1; 2; 3] is not empty"
-                            ([1; 2; 3] |> isNot empty __)
+                            (list' [1; 2; 3] |> isNot empty __)
                     ]
                 )
 
@@ -40,11 +40,11 @@ let run() =
                     [
                         verify
                             "The length of list [1; 2; 3] is 3"
-                            ([1; 2; 3] |> has length 3)
+                            (list' [1; 2; 3] |> has length 3)
                         
                         verify
                             "The length of list [1; 2; 3] is not 4"
-                            ([1; 2; 3] |> doesNotHave length 4)
+                            (list' [1; 2; 3] |> doesNotHave length 4)
                     ]
                 )
         ]

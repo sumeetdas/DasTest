@@ -12,11 +12,11 @@ let run () =
                     [
                         verify
                             "\"jpeg\" is equal to \"jpeg\""
-                            ("jpeg" |> is equalTo "jpeg")
+                            (val' "jpeg" |> is equalTo (val' "jpeg"))
                         
                         verify
                             "\"jpeg\" isNot equal to \"peg\""
-                            ("jpeg" |> isNot equalTo "peg")
+                            (val' "jpeg" |> isNot equalTo (val' "peg"))
                     ]
                 )
 
@@ -26,11 +26,11 @@ let run () =
                     [
                         verify
                             "\"banana\" contains \"ana\""
-                            ("banana" |> does contain "ana")
+                            (val' "banana" |> does contain (val' "ana"))
 
                         verify
                             "\"banana\" does not contains \"xyz\""
-                            ("banana" |> doesNot contain "xyz")
+                            (val' "banana" |> doesNot contain (val' "xyz"))
                     ]
                 )
             
@@ -40,11 +40,11 @@ let run () =
                     [
                         verify
                             "\"banana\" does start with \"ban\""
-                            ("banana" |> does startWith "ban")
+                            (val' "banana" |> does startWith (val' "ban"))
                         
                         verify
                             "\"banana\" does not start with \"ana\""
-                            ("banana" |> doesNot startWith "ana")
+                            (val' "banana" |> doesNot startWith (val' "ana"))
                     ]
                 )
 
@@ -54,11 +54,11 @@ let run () =
                     [
                         verify
                             "\"banana\" contains \"ana\""
-                            ("banana" |> does endWith "ana")
+                            (val' "banana" |> does endWith (val' "ana"))
                         
                         verify
                             "\"banana\" does not end with \"xyz\""
-                            ("banana" |> does endWith "ana")
+                            (val' "banana" |> does endWith (val' "ana"))
                     ]
                 )
 
@@ -68,11 +68,11 @@ let run () =
                     [
                         verify
                             "\"\" is empty"
-                            ("" |> is empty __)
+                            (val' "" |> is empty __)
                         
                         verify
                             "\"banana\" is not empty"
-                            ("banana" |> isNot empty __)
+                            (val' "banana" |> isNot empty __)
                     ]
                 )
         ]
