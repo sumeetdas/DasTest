@@ -15,10 +15,9 @@ An opinionated unit testing library written in F# for F#.
 # Install 
 
 To install the library, run the following command:
-
-    ```bash
-    $ dotnet add package Das.Test
-    ```
+```bash
+$ dotnet add package Das.Test
+```
 
 # Docs
 
