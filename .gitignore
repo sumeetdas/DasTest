@@ -8,3 +8,4 @@ test/obj
 src/nupkg
 
 .fake
+nupkg
