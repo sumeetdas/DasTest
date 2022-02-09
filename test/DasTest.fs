@@ -18,7 +18,7 @@ testSuite
 
 3/3 unit tests passed in test suite `ListTestSuite.fs`.
 
-3/3 unit tests passed in test suite `ValueTestSuite.fs`.
+1/1 unit tests passed in test suite `ValueTestSuite.fs`.
                     """
 
                 let actualResult = 
@@ -43,7 +43,7 @@ testSuite
                 [
                     verify
                         "Test result is same as expected"
-                        ((_string actualResult) |> is equalTo (_string expectedResult))
+                        ((string' actualResult) |> is equalTo (string' expectedResult))
                 ]
             )
     ]

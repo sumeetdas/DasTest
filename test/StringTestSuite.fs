@@ -12,11 +12,11 @@ let run () =
                     [
                         verify
                             "\"jpeg\" is equal to \"jpeg\""
-                            ((_string "jpeg") |> is equalTo (_string "jpeg"))
+                            ((string' "jpeg") |> is equalTo (string' "jpeg"))
                         
                         verify
                             "\"jpeg\" isNot equal to \"peg\""
-                            ((_string "jpeg") |> isNot equalTo (_string "peg"))
+                            ((string' "jpeg") |> isNot equalTo (string' "peg"))
                     ]
                 )
 
@@ -26,11 +26,11 @@ let run () =
                     [
                         verify
                             "\"banana\" contains \"ana\""
-                            ((_string "banana") |> does contain (_string "ana"))
+                            ((string' "banana") |> does contain (string' "ana"))
 
                         verify
                             "\"banana\" does not contains \"xyz\""
-                            ((_string "banana") |> doesNot contain (_string "xyz"))
+                            ((string' "banana") |> doesNot contain (string' "xyz"))
                     ]
                 )
             
@@ -40,11 +40,11 @@ let run () =
                     [
                         verify
                             "\"banana\" does start with \"ban\""
-                            ((_string "banana") |> does startWith (_string "ban"))
+                            ((string' "banana") |> does startWith (string' "ban"))
                         
                         verify
                             "\"banana\" does not start with \"ana\""
-                            ((_string "banana") |> doesNot startWith (_string "ana"))
+                            ((string' "banana") |> doesNot startWith (string' "ana"))
                     ]
                 )
 
@@ -54,11 +54,11 @@ let run () =
                     [
                         verify
                             "\"banana\" contains \"ana\""
-                            ((_string "banana") |> does endWith (_string "ana"))
+                            ((string' "banana") |> does endWith (string' "ana"))
                         
                         verify
                             "\"banana\" does not end with \"xyz\""
-                            ((_string "banana") |> does endWith (_string "ana"))
+                            ((string' "banana") |> does endWith (string' "ana"))
                     ]
                 )
 
@@ -68,11 +68,11 @@ let run () =
                     [
                         verify
                             "\"\" is empty"
-                            ((_string "") |> is empty __)
+                            ((string' "") |> is empty __)
                         
                         verify
                             "\"banana\" is not empty"
-                            ((_string "banana") |> isNot empty __)
+                            ((string' "banana") |> isNot empty __)
                     ]
                 )
         ]

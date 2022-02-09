@@ -36,25 +36,25 @@ So I said to myself to heck with it, let me create my own unit testing library.
 
     verify
         "num is equal to 4"
-        ((_int num) |> is equalTo (_int 4))
+        ((int' num) |> is equalTo (int' 4))
     ```
 
     * `Das.Test` provides a function called `verify` which takes verification description as the first argument and the second argument as the test you want to perform.
 
     * At the most granular level, tests are written in the following format:
         ```fsharp
-        (_int num) |> is equalTo (_int 4)
+        (int' num) |> is equalTo (int' 4)
         ```
     
-    * The first argument, here `_int num` is the actual result, while as the second argument (`_int 4`) is the expected result.
+    * The first argument, here `int' num` is the actual result, while as the second argument (`int' 4`) is the expected result.
 
-    * `Das.Test` provides certain functions like `_int`, `_string` and `_list` to describe the data type of actual and expected values. These are <u>required</u>.
+    * `Das.Test` provides certain functions like `int'`, `string'` and `list'` to describe the data type of actual and expected values. These are <u>required</u>.
 
 * If you were to test something like `"num is not equal to 50"`, then you could write the test like:
     ```fsharp
     verify
         "num is not equal to 4"
-        ((_int num) |> isNot equalTo (_int 50))
+        ((int' num) |> isNot equalTo (int' 50))
     ```
 
     * Notice `isNot` function. These are what I call **glue functions** which helps making test sound like proper English sentence. 
@@ -66,15 +66,15 @@ So I said to myself to heck with it, let me create my own unit testing library.
 * Sometimes, the expected value is not required (like when you just want to check whether a string is empty). In such a case, you would use `__` in place of expected value. For example, if you want to check whether string `name` is empty:
 
     ```fsharp
-    (_string name) |> is empty __)
+    (string' name) |> is empty __)
     ```
 
 * Other test examples:
 
     ```fsharp
-    (_float 3.2) |> isNot lessThan (_float 3.19)
+    (float' 3.2) |> isNot lessThan (float' 3.19)
 
-    (_list [1; 2; 3]) |> has length (_int 3)
+    (list' [1; 2; 3]) |> has length (int' 3)
 
     type Point = {
         x: int
@@ -97,7 +97,7 @@ So I said to myself to heck with it, let me create my own unit testing library.
         y = 2
     }
 
-    (_value pointA) |> is lessThan (_value pointB)
+    (value' pointA) |> is lessThan (value' pointB)
     ```
 
     For more examples, checkout `test` folder.
@@ -113,15 +113,15 @@ So I said to myself to heck with it, let me create my own unit testing library.
             [
                 verify
                     "3 is equal to 3"
-                    ((_int 3) |> is equalTo (_int 3))
+                    ((int' 3) |> is equalTo (int' 3))
                 
                 verify
                     "3 is not equal to 4"
-                    ((_int 3) |> isNot equalTo (_int 4))
+                    ((int' 3) |> isNot equalTo (int' 4))
                 
                 verify
                     "num is equal to 4"
-                    ((_int num) |> is equalTo (_int 4))
+                    ((int' num) |> is equalTo (int' 4))
             ]
         )
     ```
@@ -140,15 +140,15 @@ So I said to myself to heck with it, let me create my own unit testing library.
                     [
                         verify
                             "3 is equal to 3"
-                            ((_int 3) |> is equalTo (_int 3))
+                            ((int' 3) |> is equalTo (int' 3))
                         
                         verify
                             "3 is not equal to 4"
-                            ((_int 3) |> isNot equalTo (_int 4))
+                            ((int' 3) |> isNot equalTo (int' 4))
                         
                         verify
                             "num is equal to 4"
-                            ((_int num) |> is equalTo (_int 4))
+                            ((int' num) |> is equalTo (int' 4))
                     ]
                 )
 
@@ -158,11 +158,11 @@ So I said to myself to heck with it, let me create my own unit testing library.
                     [
                         verify
                             "3 is greater than 2"
-                            ((_int 3) |> is greaterThan (_int 2))
+                            ((int' 3) |> is greaterThan (int' 2))
                         
                         verify
                             "3 is not greater than than 4"
-                            ((_int 3) |> isNot greaterThan (_int 4))
+                            ((int' 3) |> isNot greaterThan (int' 4))
                     ]
                 )
         ]

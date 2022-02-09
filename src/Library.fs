@@ -4,7 +4,7 @@ module Core =
     type 'a TestType = 
         | TestString of string
         | TestList of 'a list
-        | TestListItem of 'a
+        | TestItem of 'a
         | TestValue of 'a
         | TestBoolean of bool
         | TestInteger of int
@@ -21,13 +21,13 @@ module Core =
         then sprintf "\"\"\"\n%s\n\"\"\"\n" str
         else sprintf "\"%s\"" str 
 
-    let _string (input: string) = TestString input
-    let _list (input: 'a list) = TestList input
-    let _listItem (input: 'a) = TestListItem input
-    let _value (input: 'a) = TestValue input
-    let _bool (input: bool) = TestBoolean input
-    let _int (input: int) = TestInteger input
-    let _float (input: float) = TestFloat input
+    let string' (input: string) = TestString input
+    let list' (input: 'a list) = TestList input
+    let item' (input: 'a) = TestItem input
+    let value' (input: 'a) = TestValue input
+    let bool' (input: bool) = TestBoolean input
+    let int' (input: int) = TestInteger input
+    let float' (input: float) = TestFloat input
     let __  = TestNone
 
     let is func y x = func false y x
@@ -348,7 +348,7 @@ module Core =
         : Result<bool, string> = 
 
         match list, elem with 
-        | TestList list, TestListItem item -> 
+        | TestList list, TestItem item -> 
             let resultOk = xor (list |> List.contains item) negate
             if resultOk then Ok (true)
             else 

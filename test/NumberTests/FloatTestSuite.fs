@@ -12,11 +12,11 @@ let run () =
                     [
                         verify
                             "3.2 is greater than 3.12"
-                            ((_float 3.2) |> is greaterThan (_float 3.12))
+                            ((float' 3.2) |> is greaterThan (float' 3.12))
                         
                         verify
                             "3.2 is not greater than 3.21"
-                            ((_float 3.2) |> isNot greaterThan (_float 3.21))
+                            ((float' 3.2) |> isNot greaterThan (float' 3.21))
                     ]
                 )
 
@@ -26,11 +26,11 @@ let run () =
                     [
                         verify
                             "3.2 is less than than 3.21"
-                            ((_float 3.2) |> is lessThan (_float 3.21))
+                            ((float' 3.2) |> is lessThan (float' 3.21))
                         
                         verify
                             "3.2 is not less than 3.201"
-                            ((_float 3.2) |> isNot lessThan (_float 3.19))
+                            ((float' 3.2) |> isNot lessThan (float' 3.19))
                     ]
                 )
         ]
