@@ -11,7 +11,7 @@
 
     <!-- NuGet settings -->
     <PackageId>Das.Test</PackageId>
-    <PackageTags>Das.Test;FSharp;Functional;Unit Testing;Testing;Test</PackageTags>
+    <PackageTags>Das.Test;FSharp;Functional;UnitTesting;Testing;Test</PackageTags>
     <PackageReleaseNotes>https://raw.githubusercontent.com/sumeetdas/DasTest/master/RELEASE_NOTES.md</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/sumeetdas/DasTest</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>

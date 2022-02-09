@@ -1,6 +1,6 @@
 module DasTest
 
-open Das.Test.Core
+open Das.Test
 
 testSuite 
     "Das.Test"

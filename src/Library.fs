@@ -1,6 +1,6 @@
-namespace Das.Test
+namespace Das
 
-module Core = 
+module Test = 
     type 'a TestType = 
         | TestString of string
         | TestList of 'a list

@@ -45,7 +45,7 @@ $ dotnet add package Das.Test
     
     * The first argument, here `int' num` is the actual result, while as the second argument (`int' 4`) is the expected result.
 
-    * `Das.Test` provides certain functions like `int'`, `string'` and `list'` to describe the data type of actual and expected values. These are <u>required</u>.
+    * `Das.Test` provides certain functions like `int'`, `string'` and `list'` to describe the data type of actual and expected values. These are required.
 
 * If you were to test something like `"num is not equal to 50"`, then you could write the test like:
     ```fsharp

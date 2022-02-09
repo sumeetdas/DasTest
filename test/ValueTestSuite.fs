@@ -1,6 +1,6 @@
 module ValueTestSuite
 
-open Das.Test.Core
+open Das.Test
 
 type Point = {
     x: int

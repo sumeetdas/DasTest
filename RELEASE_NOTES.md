@@ -6,4 +6,7 @@ First release with basic set of test functions.
 
 ## 1.2.0
 
-Renamed type functions like `_string` to `string'`.
+Renamed test type functions like `_string` to `string'`.
+
+## 1.3.0
+

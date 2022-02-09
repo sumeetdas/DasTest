@@ -1,6 +1,6 @@
 module NumberTests.IntegerTestSuite
 
-open Das.Test.Core
+open Das.Test
 
 let run () =
     testSuite
