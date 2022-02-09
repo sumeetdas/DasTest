@@ -9,3 +9,5 @@ src/nupkg
 
 .fake
 nupkg
+
+Test.fsx

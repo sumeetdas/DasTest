@@ -8,7 +8,7 @@ An opinionated unit testing library written in F# for F#.
 
 * The library should not expect user to know C# and dotnet (except for basic stuff to make your F# project run), and should document everything that's required to use the library in the docs itself.
 
-* The unit tests written should be easy to understand.
+* The unit tests written should be easy to understand and should read like an English sentence.
 
 * The library should not have any dependency with another dotnet library or framework.
 
@@ -33,19 +33,17 @@ $ dotnet add package Das.Test
 
     verify
         "num is equal to 4"
-        ((int' num) |> is equalTo (int' 4))
+        (num |> is equalTo (4)
     ```
 
     * `Das.Test` provides a function called `verify` which takes verification description as the first argument and the second argument as the test you want to perform.
 
     * At the most granular level, tests are written in the following format:
         ```fsharp
-        (int' num) |> is equalTo (int' 4)
+        num |> is equalTo (4)
         ```
     
-    * The first argument, here `int' num` is the actual result, while as the second argument (`int' 4`) is the expected result.
-
-    * `Das.Test` provides certain functions like `int'`, `string'` and `list'` to describe the data type of actual and expected values. These are required.
+    * The first argument, here `num` is the actual result, while as the second argument (`4`) is the expected result.
 
 * If you were to test something like `"num is not equal to 50"`, then you could write the test like:
     ```fsharp
@@ -155,11 +153,11 @@ $ dotnet add package Das.Test
                     [
                         verify
                             "3 is greater than 2"
-                            ((int' 3) |> is greaterThan (int' 2))
+                            (3 |> is greaterThan (2))
                         
                         verify
                             "3 is not greater than than 4"
-                            ((int' 3) |> isNot greaterThan (int' 4))
+                            (3 |> isNot greaterThan (4))
                     ]
                 )
         ]

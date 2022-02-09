@@ -43,7 +43,7 @@ testSuite
                 [
                     verify
                         "Test result is same as expected"
-                        ((string' actualResult) |> is equalTo (string' expectedResult))
+                        (actualResult |> is equalTo expectedResult)
                 ]
             )
     ]

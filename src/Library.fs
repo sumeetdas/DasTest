@@ -1,15 +1,43 @@
 namespace Das
 
 module Test = 
-    type 'a TestType = 
-        | TestString of string
-        | TestList of 'a list
-        | TestItem of 'a
-        | TestValue of 'a
-        | TestBoolean of bool
-        | TestInteger of int
-        | TestFloat of float
-        | TestNone
+    (*
+        Active patterns
+    *)
+
+    /// Active pattern for matching boolean values
+    let (|IsBool|_|) x =
+        match box x with 
+        | :? bool as x -> Some x
+        | _ -> None
+
+    /// Active pattern for matching integers
+    let (|IsInt|_|) x =
+        match box x with 
+        | :? int as x -> Some x
+        | _ -> None
+
+    /// Active pattern for matching floats
+    let (|IsFloat|_|) x =
+        match box x with 
+        | :? float as x -> Some x
+        | _ -> None
+
+    /// Active pattern for matching strings
+    let (|IsString|_|) x =
+        match box x with 
+        | :? string as x -> Some x
+        | _ -> None
+    
+    /// Active pattern for matching lists
+    let (|IsList|_|) x =
+        let xType = x.GetType() 
+
+        let isList = 
+            xType.IsGenericType && 
+            (xType.GetGenericTypeDefinition() = typedefof<_ list>)
+        
+        if isList then Some(unbox x) else None
 
     let private xor a b = if a then not b else b
     let private isOrNot is = if is then "is" else "is not"
@@ -21,14 +49,7 @@ module Test =
         then sprintf "\"\"\"\n%s\n\"\"\"\n" str
         else sprintf "\"%s\"" str 
 
-    let string' (input: string) = TestString input
-    let list' (input: 'a list) = TestList input
-    let item' (input: 'a) = TestItem input
-    let value' (input: 'a) = TestValue input
-    let bool' (input: bool) = TestBoolean input
-    let int' (input: int) = TestInteger input
-    let float' (input: float) = TestFloat input
-    let __  = TestNone
+    let __  = 0
 
     let is func y x = func false y x
     let isNot func y x = func true y x
@@ -38,10 +59,7 @@ module Test =
     let doesNot func y x = func true y x
     let doesNotHave func y x = func true y x
     
-    let greaterThan 
-        (negate: bool) 
-        (y: 'a TestType) 
-        (x: 'a TestType)
+    let greaterThan (negate: bool) (y: 'a) (x: 'a)
         : Result<bool, string> = 
 
         let testGreaterThan (message: string) x y = 
@@ -52,28 +70,12 @@ module Test =
 
         let is = negate
 
-        match x, y with 
-        | TestInteger intX, TestInteger intY -> 
-            testGreaterThan
-                (sprintf "%d %s greater than %d" 
-                        intX (isOrNot is) intY)
-                intX intY
-        | TestFloat floatX, TestFloat floatY -> 
-            testGreaterThan
-                (sprintf "%f %s greater than %f" 
-                        floatX (isOrNot is) floatY)
-                floatX floatY
-        | TestValue valX, TestValue valY -> 
-            testGreaterThan
-                (sprintf "%A %s greater than %A" 
-                        valX (isOrNot is) valY)
-                valX valY
-        | _ -> Error (notSupported x y)
+        testGreaterThan
+            (sprintf "%A %s greater than %A" 
+                    x (isOrNot is) y)
+            x y
 
-    let greaterThanOrEqualTo 
-        (negate: bool) 
-        (y: 'a TestType) 
-        (x: 'a TestType)
+    let greaterThanOrEqualTo (negate: bool) y x
         : Result<bool, string> = 
 
         let testGreaterThanOrEqualTo (message: string) x y = 
@@ -84,28 +86,12 @@ module Test =
 
         let is = negate
 
-        match x, y with 
-        | TestInteger intX, TestInteger intY -> 
-            testGreaterThanOrEqualTo
-                (sprintf "%d %s greater than or equal to %d" 
-                        intX (isOrNot is) intY)
-                intX intY
-        | TestFloat floatX, TestFloat floatY -> 
-            testGreaterThanOrEqualTo
-                (sprintf "%f %s greater than or equal to %f" 
-                        floatX (isOrNot is) floatY)
-                floatX floatY
-        | TestValue valX, TestValue valY -> 
-            testGreaterThanOrEqualTo
-                (sprintf "%A %s greater than or equal to %A" 
-                        valX (isOrNot is) valY)
-                valX valY
-        | _ -> Error (notSupported x y)
+        testGreaterThanOrEqualTo
+            (sprintf "%A %s greater than or equal to %A" 
+                    x (isOrNot is) y)
+            x y
 
-    let lessThan 
-        (negate: bool) 
-        (y: 'a TestType) 
-        (x: 'a TestType) 
+    let lessThan (negate: bool) y x
         : Result<bool, string> = 
 
         let testLessThan (message: string) x y = 
@@ -116,28 +102,12 @@ module Test =
 
         let is = negate
 
-        match x, y with 
-        | TestInteger intX, TestInteger intY -> 
-            testLessThan
-                (sprintf "%d %s less than %d" 
-                        intX (isOrNot is) intY)
-                intX intY
-        | TestFloat floatX, TestFloat floatY -> 
-            testLessThan
-                (sprintf "%f %s less than %f" 
-                        floatX (isOrNot is) floatY)
-                floatX floatY
-        | TestValue valX, TestValue valY -> 
-            testLessThan
-                (sprintf "%A %s less than %A" 
-                        valX (isOrNot is) valY)
-                valX valY
-        | _ -> Error (notSupported x y)
+        testLessThan
+            (sprintf "%A %s less than %A" 
+                    x (isOrNot is) y)
+            x y
 
-    let lessThanOrEqualTo 
-        (negate: bool) 
-        (y: 'a TestType) 
-        (x: 'a TestType)
+    let lessThanOrEqualTo (negate: bool) y x
         : Result<bool, string> = 
 
         let testLessThanOrEqualTo (message: string) x y = 
@@ -148,32 +118,17 @@ module Test =
 
         let is = negate
 
-        match x, y with 
-        | TestInteger intX, TestInteger intY -> 
-            testLessThanOrEqualTo
-                (sprintf "%d %s less than or equal to %d" 
-                        intX (isOrNot is) intY)
-                intX intY
-        | TestFloat floatX, TestFloat floatY -> 
-            testLessThanOrEqualTo
-                (sprintf "%f %s less than or equal to %f" 
-                        floatX (isOrNot is) floatY)
-                floatX floatY
-        | TestValue valX, TestValue valY -> 
-            testLessThanOrEqualTo
-                (sprintf "%A %s less than or equal to %A" 
-                        valX (isOrNot is) valY)
-                valX valY
-        | _ -> Error (notSupported x y)
+        testLessThanOrEqualTo
+            (sprintf "%A %s less than or equal to %A" 
+                    x (isOrNot is) y)
+            x y
+            
 
-    let True 
-        (negate: bool) 
-        (_: 'a TestType) 
-        (x: 'a TestType)
+    let True (negate: bool) _ x
         : Result<bool, string> =
 
         match x with 
-        | TestBoolean boolInput ->   
+        | IsBool boolInput ->   
             let resultOk = xor (boolInput = true) negate
             if resultOk then Ok (true)
             else 
@@ -183,14 +138,11 @@ module Test =
                 Error (text)
         | _ -> Error (notSupported x x)
            
-    let False 
-        (negate: bool) 
-        (_: 'a TestType) 
-        (x: 'a TestType)
+    let False (negate: bool) _ x
         : Result<bool, string> = 
 
         match x with 
-        | TestBoolean boolInput -> 
+        | IsBool boolInput -> 
             let resultOk = xor (boolInput = false) negate
             if resultOk then Ok (true)
             else 
@@ -200,14 +152,11 @@ module Test =
                 Error (text)
         | _ -> Error (notSupported x x)
         
-    let startWith 
-        (negate: bool) 
-        (text: 'a TestType) 
-        (x: 'a TestType)
+    let startWith (negate: bool) text x
         : Result<bool, string> = 
 
         match x, text with
-        | TestString strX, TestString strText -> 
+        | IsString strX, IsString strText -> 
             let resultOk = xor (strX.StartsWith(strText)) negate
             if resultOk then Ok (true)
             else 
@@ -217,14 +166,11 @@ module Test =
                 Error (message)
         | _ -> Error (notSupported x text)
 
-    let endWith 
-        (negate: bool) 
-        (text: 'a TestType) 
-        (x: 'a TestType)
+    let endWith (negate: bool) text x
         : Result<bool, string> = 
 
         match x, text with 
-        | TestString strX, TestString strText -> 
+        | IsString strX, IsString strText -> 
             let resultOk = xor (strX.EndsWith(strText)) negate
             if resultOk then Ok (true)
             else 
@@ -234,14 +180,11 @@ module Test =
                 Error (message)
         | _ -> Error (notSupported x text)
 
-    let contain 
-        (negate: bool) 
-        (y: 'a TestType) 
-        (input: 'a TestType)
+    let contain (negate: bool) y input
         : Result<bool, string> = 
 
         match input, y with 
-        | TestString strInput, TestString strY -> 
+        | IsString strInput, IsString strY -> 
             let resultOk = xor (strInput.Contains(strY)) negate
             if resultOk then Ok (true)
             else 
@@ -252,10 +195,7 @@ module Test =
         | _ -> 
             Error (sprintf "Input %A is not supported." input)
 
-    let equalTo 
-        (negate: bool) 
-        (expected: 'a TestType) 
-        (actual: 'a TestType)
+    let equalTo (negate: bool) expected actual
         : Result<bool, string> = 
         
         let testEqual (message: string) a b = 
@@ -264,39 +204,16 @@ module Test =
             else 
                 Error (message)
 
-        match actual, expected with 
-        | TestString strActual, TestString strExpected -> 
-            testEqual 
-                (sprintf "Actual string %s %s equal to expected string %s" 
-                        (formatString strActual) 
-                        (isOrNot negate) 
-                        (formatString strExpected))
-                strActual strExpected
-        | TestList listActual, TestList listExpected -> 
-            testEqual
-                (sprintf "List %A %s equal to %A" 
-                    listActual (isOrNot negate) listExpected)
-                listActual listExpected
-        | TestInteger integerActual, TestInteger integerExpected -> 
-            testEqual
-                (sprintf "Integer %d %s equal to Integer %d" 
-                    integerActual (isOrNot negate) integerExpected)
-                integerActual integerExpected
-        | TestFloat floatActual, TestFloat floatExpected -> 
-            testEqual
-                (sprintf "Float %f %s equal to Float %f" 
-                    floatActual (isOrNot negate) floatExpected)
-                floatActual floatExpected
-        | _ -> Error (notSupported actual expected)
+        testEqual
+            (sprintf "List %A %s equal to %A" 
+                actual (isOrNot negate) expected)
+            actual expected
 
-    let empty 
-        (negate: bool) 
-        (_: 'a TestType) 
-        (x: 'a TestType)
+    let empty (negate: bool) (_) x
         : Result<bool, string> = 
 
-        match x with 
-        | TestString str -> 
+        match box x with 
+        | IsString str -> 
             let resultOk = xor (str.Length = 0) negate
             if resultOk then Ok (true)
             else 
@@ -304,7 +221,7 @@ module Test =
                 let text = sprintf "%s %s an empty string" 
                             str (isOrNot is)
                 Error (text)
-        | TestList list -> 
+        | IsList list -> 
             let resultOk = xor (list.Length = 0) negate
             if resultOk then Ok (true)
             else 
@@ -315,14 +232,11 @@ module Test =
         | _ -> 
             Error (sprintf "Input %A is not supported" x)
 
-    let length 
-        (negate: bool) 
-        (len: 'a TestType) 
-        (x: 'a TestType)
+    let length (negate: bool) (len: int) (x: 'a)
         : Result<bool, string> = 
 
-        match x, len with 
-        | TestString str, TestInteger len -> 
+        match box x, len with 
+        | IsString str, IsInt len -> 
             let resultOk = xor (str.Length = len) negate
             if resultOk then Ok (true)
             else 
@@ -330,7 +244,7 @@ module Test =
                 let text = sprintf "The length of %A %s %d" 
                             x (isOrNot is) len
                 Error (text)
-        | TestList list, TestInteger len -> 
+        | IsList list, IsInt len -> 
             let resultOk = xor (list.Length = len) negate
             if resultOk then Ok (true)
             else 
@@ -341,14 +255,11 @@ module Test =
         | _ -> 
             Error (notSupported x len)
 
-    let containsElem 
-        (negate: bool) 
-        (elem: 'a TestType) 
-        (list: 'a TestType)
+    let containsElem (negate: bool) elem collection
         : Result<bool, string> = 
 
-        match list, elem with 
-        | TestList list, TestItem item -> 
+        match collection, elem with 
+        | IsList list, item -> 
             let resultOk = xor (list |> List.contains item) negate
             if resultOk then Ok (true)
             else 
@@ -357,7 +268,7 @@ module Test =
                             list (doesOrNot does) elem
                 Error (text)
         | _ -> 
-            Error (notSupported list elem)
+            Error (notSupported collection elem)
         
     let verify 
         (testName: string) 

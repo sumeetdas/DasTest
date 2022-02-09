@@ -14,15 +14,15 @@ let run () =
                     [
                         verify
                             "3 is equal to 3"
-                            ((int' 3) |> is equalTo (int' 3))
+                            (3 |> is equalTo 3)
                         
                         verify
                             "3 is not equal to 4"
-                            ((int' 3) |> isNot equalTo (int' 4))
+                            (3 |> isNot equalTo 4)
                         
                         verify
                             "num is equal to 4"
-                            ((int' num) |> is equalTo (int' 4))
+                            (num |> is equalTo 4)
                     ]
                 )
 
@@ -32,11 +32,11 @@ let run () =
                     [
                         verify
                             "3 is greater than 2"
-                            ((int' 3) |> is greaterThan (int' 2))
+                            (3 |> is greaterThan 2)
                         
                         verify
                             "3 is not greater than than 4"
-                            ((int' 3) |> isNot greaterThan (int' 4))
+                            (3 |> isNot greaterThan 4)
                     ]
                 )
 
@@ -46,15 +46,15 @@ let run () =
                     [
                         verify
                             "3 is less than or equal to 3"
-                            ((int' 3) |> is lessThanOrEqualTo (int' 3))
+                            (3 |> is lessThanOrEqualTo 3)
                         
                         verify
                             "3 is less than or equal to 4"
-                            ((int' 3) |> is lessThanOrEqualTo (int' 4))
+                            (3 |> is lessThanOrEqualTo 4)
                         
                         verify
                             "3 is not less than or equal to 2"
-                            ((int' 3) |> isNot lessThanOrEqualTo (int' 2))
+                            (3 |> isNot lessThanOrEqualTo 2)
                     ]
                 )
         ]

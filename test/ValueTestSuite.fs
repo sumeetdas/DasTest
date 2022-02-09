@@ -33,11 +33,11 @@ let run() =
                    [
                         verify
                             "Point A is less than Point B"
-                            ((value' pointA) |> is lessThan (value' pointB))
+                            (pointA |> is lessThan pointB)
                         
                         verify
                             "Point B is not less than Point A"
-                            ((value' pointB) |> isNot lessThan (value' pointA))
+                            (pointB |> isNot lessThan pointA)
                     ]
                 )
         ]
