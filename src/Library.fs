@@ -17,12 +17,17 @@ module Test =
         | :? int as x -> Some x
         | _ -> None
 
+    let (|IsInt64|_|) x =
+        match box x with 
+        | :? System.Int64 as x -> Some x
+        | _ -> None
+
     /// Active pattern for matching floats
     let (|IsFloat|_|) x =
         match box x with 
         | :? float as x -> Some x
         | _ -> None
-
+        
     /// Active pattern for matching strings
     let (|IsString|_|) x =
         match box x with 
@@ -34,6 +39,7 @@ module Test =
         | TestArray of 'a array
         | TestList of 'a list
         | TestValue of 'a
+        | TestOption of 'a option
         | TestMapKey of 'k
         | TestMapValue of 'v
         | TestMap of Map<'k , 'v>
@@ -55,9 +61,10 @@ module Test =
     let array' (input: 'a array) = TestArray input
     let seq' (input: 'a seq) = TestSequence input
     let map' (input: Map<'a, 'b>) = TestMap input
-    let mapKey' (input: 'a) = TestMapKey input
-    let mapValue' (input: 'b) = TestMapValue input
+    let key' (input: 'a) = TestMapKey input
     let __  = TestNone
+    let none' = TestOption (None)
+    let some' (input: 'a) = TestOption (Some input)
 
     let is func y x = func false y x
     let isNot func y x = func true y x
@@ -260,7 +267,7 @@ module Test =
                                 x (isOrNot is) len
                     Error (text)
             | _ -> Error (notSupported x x)
-        | TestList list  -> 
+        | TestList list -> 
             let resultOk = xor (list.Length = len) negate
             if resultOk then Ok (true)
             else 
