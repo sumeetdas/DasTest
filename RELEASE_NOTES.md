@@ -15,3 +15,7 @@ changed module from Das.Test.Core to Das.Test
 ## 1.4.0
 
 simplified test type functions
+
+## 1.5.0
+
+added `option` test type
