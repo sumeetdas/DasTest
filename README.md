@@ -23,7 +23,7 @@ $ dotnet add package Das.Test
 
 * To use the library, use `open` statement:
     ```fsharp
-    open Das.Test.Core
+    open Das.Test
     ```
 
 * To understand how tests are written, let us look at how to test whether two numbers are equal:
@@ -40,16 +40,34 @@ $ dotnet add package Das.Test
 
     * At the most granular level, tests are written in the following format:
         ```fsharp
-        num |> is equalTo (4)
+        val' num |> is equalTo (val' 4)
         ```
     
-    * The first argument, here `num` is the actual result, while as the second argument (`4`) is the expected result.
+    * The first argument, here `val' num` is the actual result, while as the second argument (`val' 4`) is the expected result.
+
+    * `val'` is what I call **test type functions**, which are essentially functions which convert values into an internally defined test type. This conversion is required as the test functions operate on the test types. 
+
+    * This approach allows in reusing same function for multiple tests involving different data types. For instance, `contain` test can be used with both `string` and `list` types:
+
+        ```fsharp
+        (list' [1; 2; 3] |> does contain (val' 2))
+
+        (val' "some text" |> does contain (val' "ext"))    
+        ```
+
+    * Following test type functions are available:
+        * `val'` to convert primitive types like `int`, `float` and `string`.
+        * `list'` to convert lists.
+        * `seq'` to convert sequences
+        * `array'` to convert arrays
+        * `map'` to convert maps
+        * `option'` to convert `option` type
 
 * If you were to test something like `"num is not equal to 50"`, then you could write the test like:
     ```fsharp
     verify
         "num is not equal to 4"
-        ((int' num) |> isNot equalTo (int' 50))
+        ((val' num) |> isNot equalTo (val' 50))
     ```
 
     * Notice `isNot` function. These are what I call **glue functions** which helps making test sound like proper English sentence. 
@@ -61,15 +79,15 @@ $ dotnet add package Das.Test
 * Sometimes, the expected value is not required (like when you just want to check whether a string is empty). In such a case, you would use `__` in place of expected value. For example, if you want to check whether string `name` is empty:
 
     ```fsharp
-    (string' name) |> is empty __)
+    (val' name |> is empty __)
     ```
 
 * Other test examples:
 
     ```fsharp
-    (float' 3.2) |> isNot lessThan (float' 3.19)
+    (val' 3.2 |> isNot lessThan (val' 3.19)
 
-    (list' [1; 2; 3]) |> has length (int' 3)
+    (list' [1; 2; 3] |> has length (val' 3)
 
     type Point = {
         x: int
@@ -92,7 +110,7 @@ $ dotnet add package Das.Test
         y = 2
     }
 
-    (value' pointA) |> is lessThan (value' pointB)
+    (val' pointA |> is lessThan (val' pointB)
     ```
 
     For more examples, checkout `test` folder.
@@ -108,15 +126,15 @@ $ dotnet add package Das.Test
             [
                 verify
                     "3 is equal to 3"
-                    ((int' 3) |> is equalTo (int' 3))
+                    (val' 3 |> is equalTo (val' 3))
                 
                 verify
                     "3 is not equal to 4"
-                    ((int' 3) |> isNot equalTo (int' 4))
+                    (val' 3 |> isNot equalTo (val' 4))
                 
                 verify
                     "num is equal to 4"
-                    ((int' num) |> is equalTo (int' 4))
+                    (val' num |> is equalTo (val' 4))
             ]
         )
     ```
@@ -135,15 +153,15 @@ $ dotnet add package Das.Test
                     [
                         verify
                             "3 is equal to 3"
-                            ((int' 3) |> is equalTo (int' 3))
+                            (val' 3 |> is equalTo (val' 3))
                         
                         verify
                             "3 is not equal to 4"
-                            ((int' 3) |> isNot equalTo (int' 4))
+                            (val' 3 |> isNot equalTo (val' 4))
                         
                         verify
                             "num is equal to 4"
-                            ((int' num) |> is equalTo (int' 4))
+                            (val' num |> is equalTo (val' 4))
                     ]
                 )
 
