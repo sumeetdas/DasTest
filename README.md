@@ -171,11 +171,11 @@ $ dotnet add package Das.Test
                     [
                         verify
                             "3 is greater than 2"
-                            (3 |> is greaterThan (2))
+                            (val' 3 |> is greaterThan (val' 2))
                         
                         verify
                             "3 is not greater than than 4"
-                            (3 |> isNot greaterThan (4))
+                            (val' 3 |> isNot greaterThan (val' 4))
                     ]
                 )
         ]
