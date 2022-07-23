@@ -221,7 +221,7 @@ module Test =
             let resultOk = (xor (a = b) negate)
             if resultOk then Ok (true) 
             else 
-                Error (sprintf "List %A %s equal to %A" 
+                Error (sprintf "%A %s equal to %A" 
                         actual (isOrNot negate) expected)
 
         match actual, expected with 
