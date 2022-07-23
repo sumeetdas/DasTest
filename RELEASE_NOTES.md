@@ -19,3 +19,11 @@ simplified test type functions
 ## 1.5.0
 
 added `option` test type
+
+## 1.6.0
+
+corrected error message and added a util function
+
+## 1.6.1
+
+corrected util function name

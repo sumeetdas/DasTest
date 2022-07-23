@@ -19,6 +19,8 @@ testSuite
 3/3 unit tests passed in test suite `ListTestSuite.fs`.
 
 1/1 unit tests passed in test suite `ValueTestSuite.fs`.
+
+5/5 unit tests passed in test suite `UtilTestSuite.fs`.
                     """
 
                 let actualResult = 
@@ -28,6 +30,7 @@ testSuite
                         StringTestSuite.run()
                         ListTestSuite.run()
                         ValueTestSuite.run()
+                        UtilTestSuite.run()
                     ] 
                     |> String.concat "\n"
 

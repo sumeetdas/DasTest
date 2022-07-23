@@ -11,6 +11,7 @@
     <Compile Include="StringTestSuite.fs" />
     <Compile Include="ListTestSuite.fs" />
     <Compile Include="ValueTestSuite.fs" />
+    <Compile Include="UtilTestSuite.fs" />
     <Compile Include="DasTest.fs" />
   </ItemGroup>
 

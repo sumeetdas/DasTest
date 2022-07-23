@@ -1,6 +1,7 @@
-namespace Das
+namespace Das.Test
 
-module Test = 
+[<AutoOpen>]
+module Core = 
     (*
         Active patterns
     *)
